@@ -3,8 +3,8 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get -y upgrade && apt-get install -y apt-utils curl vim
 
 # nodejs, npm
-RUN apt-get install -y nodejs nodejs-legacy
-RUN curl -L https://npmjs.org/install.sh | sh
+RUN curl -sL https://deb.nodesource.com/setup_5.x | bash -
+RUN apt-get install -y nodejs
 
 # git
 RUN apt-get install -y git
@@ -13,11 +13,15 @@ RUN apt-get install -y git
 RUN mkdir /hackmd
 WORKDIR /hackmd
 RUN git clone https://github.com/hackmdio/hackmd.git /hackmd
-RUN git checkout 9586e2057f9ede5c0514ecf5f44b72b88e3c6129
+RUN git checkout 018beab583b5affb59321762388e376d5f123b0f
 
 # npm, deps
 RUN apt-get install -y python build-essential make gcc g++ libkrb5-dev
 RUN npm install
+
+# bower
+RUN npm install -g bower
+RUN bower install --allow-root
 
 # add config
 ADD config.js /hackmd/config.js
